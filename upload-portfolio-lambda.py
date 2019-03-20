@@ -17,7 +17,7 @@ def lambda_handler(event, context):
     with zipfile.ZipFile(hughbuild_zip) as myzip:
         for nm in myzip.namelist():
             obj = myzip.open(nm)
-            hughgk_bucket.upload_fileobj(obj, nm,
-             ExtraArgs={'ContentType': 'basestring'})
+            hughgk_bucket.uploadfileobj(obj, nm,
+            ExtraArgs={'ContentType': mimetypes.guess_type(nm)[0]})
             hughgk_bucket.Object(nm).Acl().put(ACL='public-read')
     return 'Hello from Lambda'
