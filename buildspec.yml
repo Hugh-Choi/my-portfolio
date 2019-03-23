@@ -1,4 +1,4 @@
-version: 0.2
+  version: 0.2
 
 phases:
   build:
@@ -6,5 +6,8 @@ phases:
       - echo Nothing to yet
 artifacts:
   files:
-    - '**/*'
-  name: hughbuild.zip-$(date +%Y-%m-%d) 
+    - index.html
+    - favicon.ico
+    - style/*
+    - images/*
+  name: hughbuild.zip-$(date +%Y-%m-%d)
