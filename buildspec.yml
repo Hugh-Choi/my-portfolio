@@ -1,12 +1,13 @@
-version: 0.1
+  version: 0.2
 
 phases:
   build:
     commands:
-      - echo Nothing to do yet
+      - echo Nothing to yet
 artifacts:
   files:
     - index.html
     - favicon.ico
-    - styles/main.css
+    - style/*
     - images/*
+  name: hughbuild.zip-$(date +%Y-%m-%d)
