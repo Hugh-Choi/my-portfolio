@@ -8,15 +8,29 @@ def lambda_handler(event, context):
     sns = boto3.resource('sns')
     topic = sns.Topic('arn:aws:sns:us-east-1:538156793309:deployPortfolio_Topic')
 
+    location = {
+        "bucketName": 'hughbuild.playgk.com',
+        "objectKey": 'hughbuild.zip'
+    }
+
     try:
+        job = event.get("CodePipeline.job")
+
+
+        if job:
+            for artifact in job["data"]["inputArtifacts"]:
+                if artifact["name"] == "hughbuild":
+                    location = artifact["location"]["s3Location"]
+
+        print ("Building portfolio from" +str(location))
         s3 = boto3.resource('s3', config=Config(signature_version='s3v4'))
 
         hughgk_bucket = s3.Bucket('hugh.playgk.com')
-        build_bucket = s3.Bucket('hughbuild.playgk.com')
+        build_bucket = s3.Bucket(location["bucketName"])
 
         ## download the zip file file, not to bucket but in-memory container
         hughbuild_zip = io.BytesIO()
-        build_bucket.download_fileobj('hughbuild.zip', hughbuild_zip)
+        build_bucket.download_fileobj(location["objectKey"], hughbuild_zip)
 
         ##the destination is a BytesIO object expand the zip file
         with zipfile.ZipFile(hughbuild_zip) as myzip:
@@ -31,6 +45,10 @@ def lambda_handler(event, context):
 
         print ("Job Done")
         topic.publish(Subject="Porfolio Deployment", Message="Portfolio deployed successfully")
+        if job:
+            codepipeline = boto3.client('codepipeline')
+            codepipeline.put_job_success_result(jobId=job["id"])
+
     except:
         topic.publish(Subject="Porfolio Deployment Failed", Message="Portfolio deploy failed")
         raise
