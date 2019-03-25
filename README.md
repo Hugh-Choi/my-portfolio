@@ -19,4 +19,4 @@ codebuild & github- download to s3
 
 AWSCli&boto3 to zipfile and extract the file betw buckets
 
-Lambda to automatte the python 
+Lambda to run the python script 
