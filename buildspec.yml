@@ -6,5 +6,8 @@ phases:
       - echo Nothing to yet
 artifacts:
   files:
-    - '**/*'
+    - 'images/*'
+    - 'index.html'
+    - 'favicon.ico'
+    - 'main.css'
   name: hughbuild.zip-$(date +%Y-%m-%d)
