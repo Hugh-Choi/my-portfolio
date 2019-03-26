@@ -1,4 +1,4 @@
-# Hugh Choi's portfolio
+# Hugh Choi's serverless portfolio
 
 This is my professional portfolio. It uses AWS and ReactJS
 
